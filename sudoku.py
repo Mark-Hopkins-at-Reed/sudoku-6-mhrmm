@@ -48,6 +48,7 @@ class SudokuBoard:
     def zones(self):
         return self.rows() + self.columns() + self.boxes()
     
+    
     def cnf(self):
         num_symbols = self.box_width * self.box_width
         clause_strs = []
@@ -57,6 +58,7 @@ class SudokuBoard:
         clause_strs += nonempty_clauses(self.box_width)
         clauses = [cnf.c(clause) for clause in clause_strs]
         return Cnf(list(set(clauses)))
+    
 
 
 def at_least_clause(cells, d):

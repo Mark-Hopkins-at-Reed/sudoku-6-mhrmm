@@ -51,7 +51,11 @@ class TestResolveSymbol(unittest.TestCase):
     def test_resolve_symbol6(self):
         resolvent = resolve_symbol(cnf.c('!b || !c'), cnf.c('b || !c || e || d'), 'b')
         assert resolvent == cnf.c('d || !c || e')
- 
+
+    def test_resolve_symbol7(self):
+        resolvent = resolve_symbol(cnf.c('!b'), cnf.c('b'), 'b')
+        assert resolvent == cnf.c('FALSE')
+
         
 class TestResolve(unittest.TestCase):
 

@@ -1,6 +1,5 @@
 import queue
 import cnf
-from util import log
 
 def resolve_symbol(clause1, clause2, symbol):
     if symbol in clause1 and symbol in clause2:
@@ -41,9 +40,6 @@ class ClauseQueue:
     
     def empty(self):
         return self.queue.empty()
-    
-    def num_generated(self):
-        return len(self.cached_clauses)
 
 def resolution_closure(initial_unprocessed, early_stopping=False):
     processed = set([])    
@@ -56,16 +52,10 @@ def resolution_closure(initial_unprocessed, early_stopping=False):
         next_to_process = unprocessed.pop()
         for clause in processed:
             for resolvent in resolve(next_to_process, clause):
-                is_new_clause = unprocessed.push(resolvent)
-                if is_new_clause:
-                    log("{} [BY RESOLVING {} WITH {}]"
-                        .format(resolvent, next_to_process, clause))                    
+                unprocessed.push(resolvent)                
                 if early_stopping and not bool(resolvent):
-                    log("Proved unsat after generating {} clauses."
-                        .format(unprocessed.num_generated()))
                     return set([resolvent])   
         processed.add(next_to_process)
-    log("Proved sat after generating {} clauses.".format(unprocessed.num_generated()))
     return processed
 
 def full_resolution(sent):
